@@ -16,14 +16,20 @@ jobs:
     - name: Setup SSH
       shell: bash
       env:
-        SSH_KEY_SECRET: ${{ secrets.SSH_KEY }}
+        SSH_KEY: ${{secrets.SSH_KEY}}
+        PORT: ${{secrets.PORT}}
+        HOST: ${{secrets.HOST}}
       run: |
         mkdir -p ~/.ssh
-        echo "$secrets.SSH_KEY" > ~/.ssh/deploy_key
+        echo "$env:SSH_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
-        ssh-keyscan -p ${{ secrets.PORT }} -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+        ssh-keyscan -p $env:PORT -H $env:HOST >> ~/.ssh/known_hosts
     
     - name: Rsync to VPS
+      env:
+        PORT: ${{secrets.PORT}}
+        HOST: ${{secrets.HOST}}
+        USER: ${{secrets.USER}}
       run: |
         rsync -avzr --delete \
           --exclude='.git' \
@@ -31,13 +37,17 @@ jobs:
           --exclude='bin/' \
           --exclude='obj/' \
           --exclude='.env' \
-          -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.PORT }}" \
-          ./ ${{ secrets.USER }}@${{ secrets.HOST }}:~/app/
+          -e "ssh -i ~/.ssh/deploy_key -p $env:PORT" \
+          ./ $env:USER@$env:HOST:~/app/
     
     - name: Deploy with Docker Compose
+      env:
+        PORT: ${{secrets.PORT}}
+        HOST: ${{secrets.HOST}}
+        USER: ${{secrets.USER}}
       run: |
-        ssh -i ~/.ssh/deploy_key -p ${{ secrets.PORT }} \
-          ${{ secrets.USER }}@${{ secrets.HOST }} \
+        ssh -i ~/.ssh/deploy_key -p $env:PORT \
+          $env:USE@$env:HOST \
           "cd ~/app && docker-compose down && docker-compose up -d --build"
 
     - name: Verify Deployment
