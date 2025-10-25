@@ -9,7 +9,8 @@ public static class BootstrapEndpoints
     {
         var group = application.MapGroup("")
             .WithTags("Bootstrap")
-            .WithDescription("Initial setup endpoints for creating the first tenant and API key");
+            .WithDescription("Initial setup endpoints for creating the first tenant and API key")
+            .AllowAnonymous();
 
         MapBootstrap(group);
 
