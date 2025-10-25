@@ -15,6 +15,7 @@ namespace Cerberus
             // Add services to the container.
             builder.Services.AddAuthorization();
 
+
             // Configure JSON serialization - serialize enums as strings
             builder.Services.ConfigureHttpJsonOptions(options =>
             {
