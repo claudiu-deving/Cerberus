@@ -46,7 +46,7 @@ jobs:
         USER: ${{secrets.USER}}
       run: |
         ssh -i ~/.ssh/deploy_key -p "$PORT" \
-          "$USE"@"$HOST" \
+          "$USER"@"$HOST" \
           "cd ~/app && docker-compose down && docker-compose up -d --build"
 
     - name: Verify Deployment
