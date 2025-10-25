@@ -8,6 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: PROD
+      SSH_KEY_SECRET:${{ secrets.SSH_KEY }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -15,7 +16,7 @@ jobs:
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+        echo "$secrets.SSH_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         ssh-keyscan -p ${{ secrets.PORT }} -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
     
