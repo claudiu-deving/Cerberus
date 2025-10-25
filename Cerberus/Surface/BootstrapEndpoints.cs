@@ -27,11 +27,11 @@ public static class BootstrapEndpoints
             [FromServices] IConfiguration configuration) =>
         {
             // Verify bootstrap token
-            var bootstrapToken = configuration["Cerberus:BootstrapToken"];
+            var bootstrapToken = Environment.GetEnvironmentVariable("BOOTSTRAP_TOKEN");
             if (string.IsNullOrWhiteSpace(bootstrapToken) || bootstrapToken == "CHANGE_THIS_IN_PRODUCTION_VIA_ENV_VAR")
             {
                 return Results.Problem(
-                    detail: "Bootstrap token not configured. Set Cerberus:BootstrapToken in appsettings.json or environment variable.",
+                    detail: "Bootstrap token not configured. Set BOOTSTRAP_TOKEN in environment variable.",
                     statusCode: 500);
             }
 

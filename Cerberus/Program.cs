@@ -60,8 +60,11 @@ namespace Cerberus
             });
 
             // Database
-            var connectionString = builder.Configuration.GetConnectionString("CerberusDatabase")
-                ?? throw new InvalidOperationException("Connection string 'CerberusDatabase' not found.");
+            var dbName = Environment.GetEnvironmentVariable("DATABASE_NAME");
+            var dbUser = Environment.GetEnvironmentVariable("DATABASE_USER");
+            var dbPassword = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
+            var connectionString = $"Host=postgres;Port=5432;Database={dbName};Username={dbUser};Password={dbPassword}";
+
             builder.Services.AddSingleton<IDbConnectionFactory>(new PostgresConnectionFactory(connectionString));
 
             // Repositories

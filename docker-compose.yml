@@ -1,20 +1,18 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
     container_name: cerberus-postgres
     environment:
-      POSTGRES_DB: cerberus
-      POSTGRES_USER: cerberus_user
-      POSTGRES_PASSWORD: cerberus_password
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - "5433:5432"
     volumes:
       - cerberus-postgres-data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cerberus_user -d cerberus"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,8 +26,11 @@ services:
       dockerfile: Cerberus/Dockerfile
     container_name: cerberus-api
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__CerberusDatabase=Host=postgres;Port=5432;Database=cerberus;Username=cerberus_user;Password=cerberus_password
+      BOOTSTRAP_TOKEN: ${BOOTSTRAP_TOKEN}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - "5000:8080"
       - "5001:8081"
