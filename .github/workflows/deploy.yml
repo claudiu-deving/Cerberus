@@ -36,8 +36,8 @@ jobs:
           --exclude='bin/' \
           --exclude='obj/' \
           --exclude='.env' \
-          -e "ssh -i ~/.ssh/deploy_key -p "$env:PORT"" \
-          ./ "$env:USER"@"$env:HOST":~/app/
+          -e "ssh -i ~/.ssh/deploy_key -p "$PORT"" \
+          ./ "$USER"@"$HOST":~/app/
     
     - name: Deploy with Docker Compose
       env:
@@ -45,8 +45,8 @@ jobs:
         HOST: ${{secrets.HOST}}
         USER: ${{secrets.USER}}
       run: |
-        ssh -i ~/.ssh/deploy_key -p "$env:PORT" \
-          "$env:USE"@"$env:HOST" \
+        ssh -i ~/.ssh/deploy_key -p "$PORT" \
+          "$USE"@"$HOST" \
           "cd ~/app && docker-compose down && docker-compose up -d --build"
 
     - name: Verify Deployment
