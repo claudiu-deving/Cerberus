@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker-compose up -d)",
+      "Bash(docker exec cerberus-postgres psql -U cerberus_user -d cerberus -c \"\\d tenants\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,132 @@
+@Cerberus_HostAddress = https://localhost:7069
+@bootstrapToken = THE_DEVELOPMENT_BOOTSTRAP_TOKEN_FOR_CREATION_OF_TENANT
+@tenantId =
+@projectId =
+@apiKey =
+
+#####################################################
+# STEP 0: Bootstrap (First Time Setup ONLY)
+# Creates your first tenant + master API key
+#####################################################
+
+POST {{Cerberus_HostAddress}}/bootstrap
+Content-Type: application/json
+{
+  "bootstrapToken": "{{bootstrapToken}}",
+  "tenantName": "Instructo",
+  "apiKeyName": "Master API Key",
+  "expiresAt": null
+}
+###
+
+#####################################################
+# STEP 1: Create API Keys (After Bootstrap)
+#####################################################
+
+# Option A: Create API key for EXISTING tenant
+POST {{Cerberus_HostAddress}}/api-keys
+Content-Type: application/json
+
+{
+  "name": "My Tenant API Key",
+  "tenantId": "{{tenantId}}",
+  "projectId": null,
+  "expiresAt": null
+}
+###
+
+# Option B: Create API key + NEW tenant in one step
+POST {{Cerberus_HostAddress}}/api-keys
+Content-Type: application/json
+
+{
+  "name": "My API Key",
+  "tenantName": "Another Organization",
+  "projectId": null,
+  "expiresAt": null
+}
+###
+
+# Create a project-scoped API key (access to only one project)
+POST {{Cerberus_HostAddress}}/api-keys
+Content-Type: application/json
+
+{
+  "name": "My Project API Key",
+  "tenantId": "{{tenantId}}",
+  "projectId": "{{projectId}}",
+  "expiresAt": null
+}
+###
+
+# Get all API keys for a tenant
+GET {{Cerberus_HostAddress}}/api-keys/tenant/{{tenantId}}
+Accept: application/json
+###
+
+# Get specific API key by ID
+GET {{Cerberus_HostAddress}}/api-keys/{apiKeyId}
+Accept: application/json
+###
+
+# Revoke an API key
+DELETE {{Cerberus_HostAddress}}/api-keys/{apiKeyId}
+###
+
+#####################################################
+# STEP 2: Use API Key to Access Protected Resources
+# Copy the API key from Step 1 and paste it in @apiKey variable above
+#####################################################
+
+# Tenant Endpoints (now require authentication)
+GET {{Cerberus_HostAddress}}/tenants
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+# Project Endpoints (now require authentication)
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects/{{projectId}}
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects/{{projectId}}/animas
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+# Anima (Secrets) Endpoints (now require authentication)
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects/{{projectId}}/animas/API_KEY
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects/{{projectId}}/animas/DATABASE_URL
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects/{{projectId}}/animas/environment/DEVELOPMENT
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects/{{projectId}}/animas/environment/STAGING
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
+
+GET {{Cerberus_HostAddress}}/tenants/{{tenantId}}/projects/{{projectId}}/animas/environment/PRODUCTION
+Accept: application/json
+Authorization: Bearer {{apiKey}}
+###
