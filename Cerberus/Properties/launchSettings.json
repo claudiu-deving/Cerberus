@@ -3,12 +3,19 @@
     "Docker Database (Debug)": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "scalar/v1",
+      "launchUrl": "cerberus/scalar/v1",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DATABASE_NAME": "cerberus",
+        "DATABASE_USER": "cerberus_user",
+        "DATABASE_PASSWORD": "cerberus_password",
+        "BOOTSTRAP_TOKEN": "THE_DEVELOPMENT_BOOTSTRAP_TOKEN_FOR_CREATION_OF_TENANT",
+        "DATABASE_HOST": "localhost",
+        "DATABASE_PORT": "5433"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7069;http://localhost:5088"
+      "applicationUrl": "https://localhost:7069;http://localhost:5088",
+      "sqlDebugging": true
     },
     "http": {
       "commandName": "Project",
@@ -38,7 +45,6 @@
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
-      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
         "ASPNETCORE_HTTP_PORTS": "8080"

@@ -63,7 +63,9 @@ namespace Cerberus
             var dbName = Environment.GetEnvironmentVariable("DATABASE_NAME");
             var dbUser = Environment.GetEnvironmentVariable("DATABASE_USER");
             var dbPassword = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
-            var connectionString = $"Host=postgres;Port=5432;Database={dbName};Username={dbUser};Password={dbPassword}";
+            var dbHost = Environment.GetEnvironmentVariable("DATABASE_HOST");
+            var dbPort = Environment.GetEnvironmentVariable("DATABASE_PORT");
+            var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}; Tcp Keepalive=true";
 
             builder.Services.AddSingleton<IDbConnectionFactory>(new PostgresConnectionFactory(connectionString));
 
@@ -82,14 +84,15 @@ namespace Cerberus
             {
                 app.UseSwagger(options =>
                 {
-                    options.RouteTemplate = "swagger/{documentName}/swagger.json";
+                    options.RouteTemplate = "cerberus/swagger/{documentName}/swagger.json";
                 });
-                app.MapScalarApiReference(options =>
+                app.MapScalarApiReference("/cerberus/scalar", options =>
                 {
                     options
+                        .WithDynamicBaseServerUrl()
                         .WithTitle("Cerberus API Documentation")
                         .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
-                        .WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json");
+                        .WithOpenApiRoutePattern("/cerberus/swagger/{documentName}/swagger.json");
                 });
             }
 

@@ -25,7 +25,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas", request);
+        var response = await Client.PostAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -49,7 +49,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
             value = "secret_value_123",
             description = "External API key"
         };
-        await Client.PostAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
+        await Client.PostAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
 
         // Act
         var response = await Client.GetAsyncForTest($"/tenants/{tenantId}/projects/{projectId}/animas/API_KEY");
@@ -71,7 +71,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
         var (tenantId, projectId) = await CreateTenantAndProjectAsync();
 
         // Act
-        var response = await Client.GetAsyncForTest($"/tenants/{tenantId}/projects/{projectId}/animas/NONEXISTENT");
+        var response = await Client.GetAsyncForTest($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/NONEXISTENT");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -89,7 +89,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
             value = "old_value",
             description = "Old description"
         };
-        var createResponse = await Client.PostAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
+        var createResponse = await Client.PostAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
         var createResult = await createResponse.Content.ReadFromJsonAsync<CreateAnimaResponse>();
         var animaId = createResult!.Id;
 
@@ -100,13 +100,13 @@ public class AnimaEndpointsTests : IntegrationTestBase
         };
 
         // Act
-        var response = await Client.PutAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas/{animaId}", updateRequest);
+        var response = await Client.PutAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/{animaId}", updateRequest);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         // Verify the update
-        var getResponse = await Client.GetAsyncForTest($"/tenants/{tenantId}/projects/{projectId}/animas/SECRET_KEY");
+        var getResponse = await Client.GetAsyncForTest($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/SECRET_KEY");
         var updatedAnima = await getResponse.Content.ReadFromJsonAsync<AnimaDto>();
         updatedAnima!.Value.Should().Be("new_value");
         updatedAnima.Description.Should().Be("Updated description");
@@ -126,7 +126,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
         };
 
         // Act
-        var response = await Client.PutAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas/{invalidAnimaId}", updateRequest);
+        var response = await Client.PutAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/{invalidAnimaId}", updateRequest);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -144,18 +144,18 @@ public class AnimaEndpointsTests : IntegrationTestBase
             value = "temporary_value",
             description = "Temporary secret"
         };
-        var createResponse = await Client.PostAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
+        var createResponse = await Client.PostAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
         var createResult = await createResponse.Content.ReadFromJsonAsync<CreateAnimaResponse>();
         var animaId = createResult!.Id;
 
         // Act
-        var response = await Client.DeleteAsyncForTest($"/tenants/{tenantId}/projects/{projectId}/animas/{animaId}");
+        var response = await Client.DeleteAsyncForTest($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/{animaId}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         // Verify deletion
-        var getResponse = await Client.GetAsyncForTest($"/tenants/{tenantId}/projects/{projectId}/animas/TEMP_SECRET");
+        var getResponse = await Client.GetAsyncForTest($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/TEMP_SECRET");
         getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
@@ -167,7 +167,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
         var invalidAnimaId = Guid.NewGuid();
 
         // Act
-        var response = await Client.DeleteAsyncForTest($"/tenants/{tenantId}/projects/{projectId}/animas/{invalidAnimaId}");
+        var response = await Client.DeleteAsyncForTest($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/{invalidAnimaId}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -189,7 +189,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas", request);
+        var response = await Client.PostAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
@@ -207,10 +207,10 @@ public class AnimaEndpointsTests : IntegrationTestBase
             value = "secret_value",
             description = "Test secret"
         };
-        await Client.PostAsJsonAsync($"/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
+        await Client.PostAsJsonAsync($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas", createRequest);
 
         // Act - Request with different case
-        var response = await Client.GetAsyncForTest($"/tenants/{tenantId}/projects/{projectId}/animas/my_secret");
+        var response = await Client.GetAsyncForTest($"/cerberus/tenants/{tenantId}/projects/{projectId}/animas/my_secret");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -228,7 +228,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
         var apiKey = await CreateBootstrapTenantAsync("Test Organization");
         SetAuthorizationHeader(apiKey);
 
-        var tenantsResponse = await Client.GetAsyncForTest("/tenants");
+        var tenantsResponse = await Client.GetAsyncForTest("/cerberus/tenants");
         var tenants = await tenantsResponse.Content.ReadFromJsonAsync<TenantDto[]>();
         var tenantId = tenants![0].Id;
 
@@ -238,7 +238,7 @@ public class AnimaEndpointsTests : IntegrationTestBase
             description = "A test project",
             environment = "DEVELOPMENT"
         };
-        var projectResponse = await Client.PostAsJsonAsync($"/tenants/{tenantId}/projects", projectRequest);
+        var projectResponse = await Client.PostAsJsonAsync($"/cerberus/tenants/{tenantId}/projects", projectRequest);
         var project = await projectResponse.Content.ReadFromJsonAsync<CreateProjectResponse>();
         var projectId = project!.Id;
 

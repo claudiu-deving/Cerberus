@@ -102,7 +102,7 @@ public static class ProjectEndpoints
             {
                 return Results.Json(new { message = "Access denied to this tenant" }, statusCode: 403);
             }
-            if(!Enum.GetValues<Domain.Environment>().Select(x => x.ToString()).Contains(request.Environment)){
+            if(!Enum.GetValues<Domain.EnvironmentType>().Select(x => x.ToString()).Contains(request.Environment)){
                     return Results.BadRequest("Environment type must be one of the following:DEVELOPMENT|STAGING|PRODUCTION");
             }
 

@@ -14,15 +14,18 @@ public class CerberusWebApplicationFactory : WebApplicationFactory<Program>, IAs
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        Environment.SetEnvironmentVariable("DATABASE_NAME", "cerberus_test");
+        Environment.SetEnvironmentVariable("DATABASE_USER", "test_user");
+        Environment.SetEnvironmentVariable("DATABASE_PASSWORD", "test_password");
+        Environment.SetEnvironmentVariable("DATABASE_HOST", "localhost");
+        Environment.SetEnvironmentVariable("DATABASE_PORT", "5435");
+        Environment.SetEnvironmentVariable("BOOTSTRAP_TOKEN", "TEST_BOOTSTRAP_TOKEN_FOR_INTEGRATION_TESTS");
+
         builder.ConfigureAppConfiguration((context, config) =>
         {
-            // Override configuration with test database connection string
-            config.AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                ["ConnectionStrings:CerberusDatabase"] = ConnectionString,
-                ["Cerberus:BootstrapToken"] = "TEST_BOOTSTRAP_TOKEN_FOR_INTEGRATION_TESTS"
-            });
+            config.AddEnvironmentVariables();
         });
+
 
         builder.ConfigureServices(services =>
         {

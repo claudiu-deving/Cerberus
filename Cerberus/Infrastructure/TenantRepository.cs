@@ -51,7 +51,7 @@ public class TenantRepository
                         Id: projectDto.Id,
                         Name: projectDto.Name,
                         Description: projectDto.Description,
-                        Environment: Enum.Parse<Domain.Environment>(projectDto.Environment),
+                        Environment: Enum.Parse<Domain.EnvironmentType>(projectDto.Environment),
                         Animas: animasList
                     );
                     projectDict.Add(project.Id, project);
@@ -117,7 +117,7 @@ public class TenantRepository
                         Id: projectDto.Id,
                         Name: projectDto.Name,
                         Description: projectDto.Description,
-                        Environment: Enum.Parse<Domain.Environment>(projectDto.Environment),
+                        Environment: Enum.Parse<Domain.EnvironmentType>(projectDto.Environment),
                         Animas: animasList
                     );
                     projectDict.Add(project.Id, project);

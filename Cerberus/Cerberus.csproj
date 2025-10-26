@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <InternalsVisibleTo Include="Cerberus.Tests" />
   </ItemGroup>
 

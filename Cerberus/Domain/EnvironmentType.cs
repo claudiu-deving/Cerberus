@@ -1,6 +1,6 @@
 ﻿namespace Cerberus.Domain;
 
-public enum Environment
+public enum EnvironmentType
 {
     DEVELOPMENT,
     STAGING,

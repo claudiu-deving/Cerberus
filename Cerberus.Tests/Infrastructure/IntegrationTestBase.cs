@@ -19,7 +19,7 @@ public abstract class IntegrationTestBase : IClassFixture<CerberusWebApplication
     /// </summary>
     protected async Task<string> CreateBootstrapTenantAsync(string tenantName = "Test Organization", string? apiKeyName = null)
     {
-        var response = await Client.PostAsJsonAsync("/bootstrap", new
+        var response = await Client.PostAsJsonAsync("/cerberus/bootstrap", new
         {
             bootstrapToken = "TEST_BOOTSTRAP_TOKEN_FOR_INTEGRATION_TESTS",
             tenantName,
