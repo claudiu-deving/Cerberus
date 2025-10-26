@@ -65,7 +65,7 @@ namespace Cerberus
             var dbPassword = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
             var dbHost = Environment.GetEnvironmentVariable("DATABASE_HOST");
             var dbPort = Environment.GetEnvironmentVariable("DATABASE_PORT");
-            var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}; Tcp Keepalive=true";
+            var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
 
             builder.Services.AddSingleton<IDbConnectionFactory>(new PostgresConnectionFactory(connectionString));
 

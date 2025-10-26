@@ -14,11 +14,14 @@ public class CerberusWebApplicationFactory : WebApplicationFactory<Program>, IAs
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        Environment.SetEnvironmentVariable("DATABASE_NAME", "cerberus_test");
-        Environment.SetEnvironmentVariable("DATABASE_USER", "test_user");
-        Environment.SetEnvironmentVariable("DATABASE_PASSWORD", "test_password");
-        Environment.SetEnvironmentVariable("DATABASE_HOST", "localhost");
-        Environment.SetEnvironmentVariable("DATABASE_PORT", "5435");
+        // Parse the connection string to get individual components
+        var connectionStringBuilder = new Npgsql.NpgsqlConnectionStringBuilder(ConnectionString);
+
+        Environment.SetEnvironmentVariable("DATABASE_NAME", connectionStringBuilder.Database);
+        Environment.SetEnvironmentVariable("DATABASE_USER", connectionStringBuilder.Username);
+        Environment.SetEnvironmentVariable("DATABASE_PASSWORD", connectionStringBuilder.Password);
+        Environment.SetEnvironmentVariable("DATABASE_HOST", connectionStringBuilder.Host);
+        Environment.SetEnvironmentVariable("DATABASE_PORT", connectionStringBuilder.Port.ToString());
         Environment.SetEnvironmentVariable("BOOTSTRAP_TOKEN", "TEST_BOOTSTRAP_TOKEN_FOR_INTEGRATION_TESTS");
 
         builder.ConfigureAppConfiguration((context, config) =>

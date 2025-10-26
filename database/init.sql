@@ -1,6 +1,6 @@
 -- Cerberus Database Schema
 -- PostgreSQL initialization script
-
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- Tenants table
 CREATE TABLE IF NOT EXISTS tenants (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

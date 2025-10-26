@@ -15,8 +15,6 @@ public class PostgreSqlTestContainer : IAsyncDisposable
     {
         _container = new PostgreSqlBuilder()
             .WithImage("postgres:16-alpine")
-            .WithName("postgres_test")
-            .WithPortBinding(5435)
             .WithDatabase("cerberus_test")
             .WithUsername("test_user")
             .WithPassword("test_password")

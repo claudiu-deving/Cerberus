@@ -2,12 +2,12 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: cerberus-postgres
+    ports:
+      - "5440:5432"
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    ports:
-      - "5433:5432"
     volumes:
       - cerberus-postgres-data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -31,6 +31,8 @@ services:
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: 5432
     ports:
       - "5000:8080"
       - "5001:8081"
