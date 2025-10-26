@@ -98,7 +98,7 @@ namespace Cerberus
             // API Key Authentication Middleware
             app.UseMiddleware<ApiKeyAuthenticationMiddleware>();
 
-            app.UseAuthorization();
+           // app.UseAuthorization();
 
             // Register endpoints
             app.MapBootstrapEndpoints(); // Bootstrap: Create first tenant + API key

@@ -47,7 +47,7 @@ jobs:
       run: |
         ssh -i ~/.ssh/deploy_key -p "$PORT" \
           "$USER"@"$HOST" \
-          "cd ~/app && docker-compose down && docker-compose up -d --build"
+          "cd ~/app && docker compose down && docker compose up -d --build"
 
     - name: Verify Deployment
       uses: appleboy/ssh-action@v1.0.0
