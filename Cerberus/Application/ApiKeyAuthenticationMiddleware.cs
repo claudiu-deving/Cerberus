@@ -15,10 +15,10 @@ public class ApiKeyAuthenticationMiddleware
     public async Task InvokeAsync(HttpContext context, ApiKeyService apiKeyService)
     {
         // Skip authentication for bootstrap, API key management, and documentation endpoints
-        if (context.Request.Path.StartsWithSegments("cerberus/api-keys") ||
-            context.Request.Path.StartsWithSegments("cerberus/bootstrap") ||
-            context.Request.Path.StartsWithSegments("cerberus/swagger") ||
-            context.Request.Path.StartsWithSegments("cerberus/scalar"))
+        if (context.Request.Path.StartsWithSegments("/cerberus/api-keys") ||
+            context.Request.Path.StartsWithSegments("/cerberus/bootstrap") ||
+            context.Request.Path.StartsWithSegments("/cerberus/swagger") ||
+            context.Request.Path.StartsWithSegments("/cerberus/scalar"))
         {
             await _next(context);
             return;
