@@ -78,14 +78,14 @@ namespace Cerberus
             builder.Services.AddScoped<ApiKeyService>();
 
             var app = builder.Build();
-            app.UseSwagger(options =>
-            {
-                options.RouteTemplate="cerberus/swagger/{documentName}/swagger.json";
-            });
+        
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-               
+                app.UseSwagger(options =>
+                {
+                    options.RouteTemplate="cerberus/swagger/{documentName}/swagger.json";
+                });
                 app.MapScalarApiReference("/cerberus/scalar", options =>
                 {
                     options
@@ -95,15 +95,6 @@ namespace Cerberus
                         .WithOpenApiRoutePattern("/cerberus/swagger/{documentName}/swagger.json");
                 });
             }
-            // Static read-only version
-            app.MapScalarApiReference("/cerberus/scalar/docs", options =>
-            {
-                options
-                    .HideTestRequestButton()
-                    .WithTitle("Cerberus API Documentation")
-                    .WithOpenApiRoutePattern("/cerberus/swagger/{documentName}/swagger.json")
-                    ;
-            });
             app.UseHttpsRedirection();
 
             // API Key Authentication Middleware
