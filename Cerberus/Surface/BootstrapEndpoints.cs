@@ -7,7 +7,7 @@ public static class BootstrapEndpoints
 {
     public static WebApplication MapBootstrapEndpoints(this WebApplication application)
     {
-        var group = application.MapGroup("")
+        var group = application.MapGroup("/cerberus")
             .WithTags("Bootstrap")
             .WithDescription("Initial setup endpoints for creating the first tenant and API key")
             .AllowAnonymous();

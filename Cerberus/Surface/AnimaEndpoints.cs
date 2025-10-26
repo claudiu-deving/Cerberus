@@ -8,7 +8,7 @@ public static class AnimaEndpoints
 {
     public static WebApplication MapAnimaEndpoints(this WebApplication application)
     {
-        var group = application.MapGroup("/tenants/{tenantId:guid}/projects/{projectId:guid}/animas")
+        var group = application.MapGroup("/cerberus/tenants/{tenantId:guid}/projects/{projectId:guid}/animas")
             .WithTags("Secrets (Animas)")
             .WithDescription("Manage secrets (animas) within projects");
 

@@ -10,7 +10,7 @@ public static class TenantEndpoints
 {
     public static WebApplication MapTenantEndpoints(this WebApplication application)
     {
-        var group = application.MapGroup("/tenants")
+        var group = application.MapGroup("/cerberus/tenants")
             .WithTags("Tenants")
             .WithDescription("Manage tenants (organizations)");
 

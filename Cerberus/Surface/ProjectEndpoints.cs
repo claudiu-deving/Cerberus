@@ -12,7 +12,7 @@ public static class ProjectEndpoints
 {
     public static WebApplication MapProjectEndpoints(this WebApplication application)
     {
-        var group = application.MapGroup("/tenants/{tenantId:guid}/projects")
+        var group = application.MapGroup("/cerberus/tenants/{tenantId:guid}/projects")
             .WithTags("Projects")
             .WithDescription("Manage projects within tenants");
 

@@ -9,7 +9,7 @@ public static class ApiKeyEndpoints
 {
     public static WebApplication MapApiKeyEndpoints(this WebApplication application)
     {
-        var group = application.MapGroup("/api-keys")
+        var group = application.MapGroup("/cerberus/api-keys")
             .WithTags("API Keys")
             .WithDescription("Manage API keys for authentication");
 
