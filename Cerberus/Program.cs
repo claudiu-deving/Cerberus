@@ -95,7 +95,14 @@ namespace Cerberus
                         .WithOpenApiRoutePattern("/cerberus/swagger/{documentName}/swagger.json");
                 });
             }
-
+            // Static read-only version
+            app.MapScalarApiReference("/cerberus/scalar/docs", options =>
+            {
+                options
+                    .WithTitle("Cerberus API Documentation")
+                    .WithOpenApiRoutePattern("/cerberus/swagger/{documentName}/swagger.json")
+                    .HideClientButton();
+            });
             app.UseHttpsRedirection();
 
             // API Key Authentication Middleware
