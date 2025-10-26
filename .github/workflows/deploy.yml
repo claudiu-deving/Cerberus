@@ -59,11 +59,11 @@ jobs:
         script: |
           cd ~/app
           
-          if docker-compose ps | grep -q "Up"; then
+          if docker compose ps | grep -q "Up"; then
             echo "✅ Deployment successful! Containers are running."
-            docker-compose ps
+            docker compose ps
           else
             echo "❌ Deployment failed! Containers are not running."
-            docker-compose logs --tail=50
+            docker compose logs --tail=50
             exit 1
           fi
